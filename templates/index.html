@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEIC to JPG Converter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">HEIC to JPG Converter</h1>
+    <form id="uploadForm" method="POST" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
+        <div class="mb-4">
+            <label for="file" class="block text-gray-700 text-sm font-bold mb-2">Upload HEIC File:</label>
+            <input type="file" id="file" name="file" accept=".heic" required class="w-full px-3 py-2 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Convert
+        </button>
+    </form>
+    <div id="result" class="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-md text-center hidden">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Converted Image:</h2>
+        <a id="downloadButton" href="#" download="converted.jpg" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4 inline-block hidden">
+            Download Converted Image
+        </a>
+        <img id="convertedImage" src="" alt="Converted Image" class="max-w-full rounded-lg shadow-md hidden">
+    </div>
+    <script>
+        const form = document.getElementById('uploadForm');
+        const resultDiv = document.getElementById('result');
+        const convertedImage = document.getElementById('convertedImage');
+        const downloadButton = document.getElementById('downloadButton');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    alert(error.error || 'An error occurred');
+                    return;
+                }
+
+                const data = await response.json();
+                const imageUrl = data.url.replace('/download/', '/view/');
+                
+                // Display the converted image
+                convertedImage.src = imageUrl;
+                convertedImage.style.display = 'block';
+
+                // Set up the download button
+                downloadButton.href = data.url;
+                downloadButton.style.display = 'inline-block';
+
+                // Show the result section
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
+        });
+    </script>
+    <footer class="mt-10 text-center text-gray-600">
+        <p>
+            Created by 
+            <strong>
+                <a href="https://github.com/ChaosTong" target="_blank" class="text-blue-500 hover:underline">
+                    ChaosTong
+                </a>
+            </strong>
+        </p>
+        <p>Email: <a href="mailto:easyulife@buaa.edu.cn" class="text-blue-500 hover:underline">easyulife@buaa.edu.cn</a></p>
+        <div class="mt-4 flex flex-col items-center">
+            <!-- GitHub Star Button -->
+            <iframe
+                src="https://ghbtns.com/github-btn.html?user=ChaosTong&repo=heic_trans&type=star&count=true&size=large"
+                frameborder="0"
+                scrolling="0"
+                width="160"
+                height="30"
+                title="GitHub Star Button">
+            </iframe>
+        </div>
+    </footer>
+</body>
+</html>
