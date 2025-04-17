@@ -7,7 +7,12 @@
 - 上传 HEIC 文件并转换为 JPG 格式。
 - 提供下载已转换文件的接口。
 - 提供直接查看已转换文件的接口。
-- 集成 Swagger 文档，便于测试和查看 API。
+
+## 演示网站
+
+你可以访问以下链接体验在线转换功能：
+
+[https://heic.tongchao.xyz](https://heic.tongchao.xyz)
 
 ## 运行项目
 
@@ -28,14 +33,13 @@ pip install -r requirements.txt
 python trans.py
 ```
 
-服务将运行在 `http://127.0.0.1:5000/`。
+服务将运行在 `http://127.0.0.1:9876/`。
 
-## API 文档
-
-Swagger 文档可通过以下路径访问：
+## Docker
 
 ```
-http://127.0.0.1:5000/api/docs
+docker build -t heic_trans_app .
+docker run -d -p 9876:9876 --name heic_trans_container heic_trans_app
 ```
 
 ## 使用案例
@@ -45,7 +49,7 @@ http://127.0.0.1:5000/api/docs
 ### 1. 上传 HEIC 文件并转换为 JPG
 
 ```bash
-curl -X POST -F "file=@example.heic" http://127.0.0.1:5000/upload
+curl -X POST -F "file=@example.heic" http://127.0.0.1:9876/upload
 ```
 
 **响应示例：**
@@ -53,20 +57,20 @@ curl -X POST -F "file=@example.heic" http://127.0.0.1:5000/upload
 ```json
 {
   "message": "File converted successfully",
-  "url": "http://127.0.0.1:5000/download/1234567890abcdef.jpg"
+  "url": "http://127.0.0.1:9876/download/1234567890abcdef.jpg"
 }
 ```
 
 ### 2. 下载已转换的 JPG 文件
 
 ```bash
-curl -O http://127.0.0.1:5000/download/1234567890abcdef.jpg
+curl -O http://127.0.0.1:9876/download/1234567890abcdef.jpg
 ```
 
 ### 3. 查看已转换的 JPG 文件
 
 ```bash
-curl http://127.0.0.1:5000/view/1234567890abcdef.jpg --output converted.jpg
+curl http://127.0.0.1:9876/view/1234567890abcdef.jpg --output converted.jpg
 ```
 
 ## 文件结构
