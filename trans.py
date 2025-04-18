@@ -10,6 +10,7 @@ app = Flask(__name__)
 # 设置上传目录
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
@@ -39,7 +40,7 @@ def upload_image():
         image.save(output_path, format="JPEG")
 
         # Generate a URL for the file
-        file_url = url_for('download_file', filename=output_filename, _external=True)
+        file_url = url_for('download_file', filename=output_filename, _external=True, _scheme='https')
 
         return jsonify({"message": "File converted successfully", "url": file_url}), 200
 
