@@ -91,5 +91,5 @@ curl http://127.0.0.1:9876/view/1234567890abcdef.jpg --output converted.jpg
 - 转换后的文件会存储在 `uploads/` 目录中，请确保该目录有写入权限。
 
 ## 许可证
-
+![Visited By](https://count.easyulife.com/get/@heic_trans?theme=gelbooru)
 本项目采用 [MIT License](LICENSE)。
